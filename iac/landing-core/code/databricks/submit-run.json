@@ -1,0 +1,15 @@
+{
+    "run_name": "configration-run",
+    "new_cluster": {
+      "spark_version": "9.1.x-scala2.12",
+      "node_type_id": "Standard_DS3_v2",
+      "enable_elastic_disk": true,
+      "azure_attributes": {
+        "availability": "ON_DEMAND_AZURE"
+      },
+      "num_workers": 1
+    },
+    "notebook_task": {
+      "notebook_path": "/ConfigureDatabricksWorkspace"
+    }
+}

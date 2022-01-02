@@ -1,0 +1,20 @@
+###
+# OPTIONAL. 環境変数設定.
+# 指定する場合コメントアウトを外します。指定しない場合、既定値が設定されます。
+
+# Azureリージョン 既定値: japaneast
+# AZURE_LOCATION=
+
+# Azure サブスクリプションID. 既定値: アカウントの既定のサブスクリプション
+# AZURE_SUBSCRIPTION_ID=
+
+# リソース名をユニークに保つ文字列 (最大4文字). 既定値: ランダムな数字がふられます
+# DEPLOYMENT_ID=
+
+# AzureSQLのログイン情報
+SQLLOGIN=''
+SQLPASSWORD=''
+
+# DatabricksのID
+DATABRICKS_ID=''
+

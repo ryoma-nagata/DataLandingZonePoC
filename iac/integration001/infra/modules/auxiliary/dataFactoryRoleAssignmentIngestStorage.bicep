@@ -1,0 +1,38 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+// The module contains a template to create a role assignment to a storage account file system.
+targetScope = 'resourceGroup'
+
+// Parameters
+param storageAccountId string
+param datafactoryId string
+
+// Variables
+var datafactorySubscriptionId = length(split(datafactoryId, '/')) >= 9 ? split(datafactoryId, '/')[2] : 'incorrectSegmentLength'
+var datafactoryResourceGroupName = length(split(datafactoryId, '/')) >= 9 ? split(datafactoryId, '/')[4] : 'incorrectSegmentLength'
+var datafactoryName = length(split(datafactoryId, '/')) >= 9 ? last(split(datafactoryId, '/')) : 'incorrectSegmentLength'
+var storageAccountName = length(split(storageAccountId, '/')) >= 9 ? last(split(storageAccountId, '/')) : 'incorrectSegmentLength'
+
+// Resources
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
+  name: '${storageAccountName}'
+  scope: resourceGroup()
+}
+
+resource datafactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
+  name: datafactoryName
+  scope: resourceGroup(datafactorySubscriptionId, datafactoryResourceGroupName)
+}
+
+resource synapseRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(uniqueString(storageAccount.id, datafactory.id, 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'))
+  scope: storageAccount
+  properties: {
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+    principalId: datafactory.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// Outputs
